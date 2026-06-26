@@ -1,0 +1,38 @@
+import subprocess
+import os
+
+def clear_temp_files():
+    """Clears temporary files in the user's Temp directory."""
+    temp_dir = os.environ.get("TEMP")
+    if temp_dir:
+        print(f"Clearing temporary files in: {temp_dir}")
+        command = f'del /q /f "{temp_dir}\\."'
+        subprocess.run(command, shell=True, check=False, capture_output=True)
+        print("Temporary files cleared (attempted).")
+    else:
+        print("Could not find the TEMP environment variable.")
+
+def clear_prefetch_files():
+    """Clears the system's prefetch files."""
+    prefetch_dir = "C:\\Windows\\Prefetch"
+    if os.path.exists(prefetch_dir):
+        print(f"Clearing prefetch files in: {prefetch_dir}")
+        command = f'del /q /f "{prefetch_dir}\\."'
+        subprocess.run(command, shell=True, check=False, capture_output=True)
+        print("Prefetch files cleared (attempted).")
+    else:
+        print("Prefetch directory not found.")
+
+def run_disk_cleanup():
+    """Runs the Windows Disk Cleanup utility."""
+    print("Running Disk Cleanup...")
+    command = "cleanmgr /sagerun:1"  # You might need to configure cleanup options first with 'cleanmgr /sageset:1'
+    subprocess.run(command, shell=True, check=False, capture_output=True)
+    print("Disk Cleanup initiated (may take a few moments).")
+
+if __name__ == "__main__":
+    print("Starting Windows cache clearing script...")
+    clear_temp_files()
+    clear_prefetch_files()
+    run_disk_cleanup()
+    print("Cache clearing process finished (check output for details).")
